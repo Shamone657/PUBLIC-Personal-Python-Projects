@@ -45,27 +45,26 @@ def createPassword():
     
     #Asks user which special characters are allowed to be used
     while True:
-        s = input("Enter a special character that can be used for your password: \n(Type NA or done to exit)\n").lower
-        if s == "na" or s == "done":
+        #Asks user which special characters are allowed to be used
+        s = input("Enter a special character that can be used for your password: \n(Type NA or done to exit)\n").strip()
+        
+        if s.lower() == "na" or s.lower() == "done":
             break
-        elif s.isalnum():
-            print("Invalid choice")
-            continue
-        else:
+        elif is_only_special_chars(s):
             print("Updated usable special characters")
-            specialCASE.join(s)
+            specialCASE += s  #Adds special character to specialCASE string
+        else:
+            print("Invalid choice - must be special characters only")
+            continue
     
-    #Creates randomly generated password
-    for i in range(lengthLOWER,lengthHIGHER - random.randint(0, 3)):
-        randomNum1 = random.randint(1,10000)
-        if randomNum1 < 150 or randomNum1 > 9850:
-            password += random.choice(intCASE)
-        elif randomNum1 % 3 == 0:
-            password += random.choice(specialCASE)    
-        elif randomNum1 % 3 == 1:
-            password += random.choice(upperCASE)
-        else:                    
-            password += random.choice(lowerCASE)
+    #Builds pool of available characters
+    char_pool = lowerCASE + upperCASE + intCASE + specialCASE
+    
+    if not char_pool:  #Handles case where no special chars entered
+        char_pool = lowerCASE + upperCASE + intCASE
+    
+    #Generates random password by randomly selecting from pool
+    password = ''.join(random.choice(char_pool) for _ in range(password_length))
     
     print("Your randomly generated password is: " + password)
     return(password)
@@ -85,13 +84,21 @@ def addEntry():
         writer.writerow(entry)
     print("Data successfully added!")
     
+'''Needs to be worked on'''
 def newEntry():
     site = input("Enter site/app you are creating an account in:\n") #Website where you create account
     name = input("Enter your username for the account:\n") #Username
     address = input("Enter your email address associated with that site:\n") #Email adress
 
 def alterEntry():
-    pass 
+    pass
+'''Needs to be worked on'''
+
+#Checks if string contains only special characters (no alphanumeric)
+def is_only_special_chars(s):
+    if not s:  #Empty string
+        return False
+    return not any(char.isalnum() for char in s)
         
 #Menu for user to choose what they want to do
 while True:
