@@ -64,7 +64,7 @@ def createPassword():
         char_pool = lowerCASE + upperCASE + intCASE
     
     #Generates random password by randomly selecting from pool
-    password = ''.join(random.choice(char_pool) for _ in range(password_length))
+    password = ''.join(random.choice(char_pool) for _ in range(lengthHIGHER))
     
     print("Your randomly generated password is: " + password)
     return(password)
@@ -76,22 +76,35 @@ def addEntry():
     password = input("Enter your password for your account:\n") #Password
     entry = []
     entry.append(site)
-    entry.append(name)
     entry.append(address)
+    entry.append(name)
     entry.append(password)
     with open(csv_file, "a", newline="") as csvfile:
         writer = csv.writer(csvfile)
         writer.writerow(entry)
-    print("Data successfully added!")
+    print("Data successfully added!\n")
     
-'''Needs to be worked on'''
+
 def newEntry():
     site = input("Enter site/app you are creating an account in:\n") #Website where you create account
     name = input("Enter your username for the account:\n") #Username
     address = input("Enter your email address associated with that site:\n") #Email adress
-
+    password = createPassword()
+    entry = []
+    entry.append(site)
+    entry.append(address)
+    entry.append(name)
+    entry.append(password)
+    with open(csv_file, "a", newline="") as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerow(entry)
+    print("Data successfully added!\n")
+    
+'''Needs to be worked on'''
 def alterEntry():
-    pass
+    userChoice = input("Which account/site requires changing: \n")
+    menuChoice = 0
+    menuChoice = int(input("Which credential requires changing?\n1. Site\n2. Address\n3. Name\n4. Password\n5n Exit\n")
 '''Needs to be worked on'''
 
 #Checks if string contains only special characters (no alphanumeric)
