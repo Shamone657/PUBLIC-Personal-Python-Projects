@@ -104,7 +104,7 @@ def newEntry():
 def alterEntry():
     userChoice = input("Which account/site requires changing: \n")
     menuChoice = 0
-    menuChoice = int(input("Which credential requires changing?\n1. Site\n2. Address\n3. Name\n4. Password\n5n Exit\n")
+    menuChoice = int(input("Which credential requires changing?\n1. Site\n2. Address\n3. Name\n4. Password\n5n Exit\n"))
 '''Needs to be worked on'''
 
 #Checks if string contains only special characters (no alphanumeric)
