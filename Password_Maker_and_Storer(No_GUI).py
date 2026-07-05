@@ -114,19 +114,23 @@ def is_only_special_chars(s):
     return not any(char.isalnum() for char in s)
         
 #Menu for user to choose what they want to do
-while True:
-    userChoice = 0
-    userChoice = int(input("What would you like to do?\n1. Add an entry: \n2. Create an entry: \n3. Alter an entry: \n4. Generate a random password: \n5. Exit\n"))
-    if userChoice == 1:
-        addEntry()
-    elif userChoice == 2:
-        newEntry()
-    elif userChoice == 3:
-        alterEntry()
-    elif userChoice == 4:
-        createPassword()
-    elif userChoice == 5:
-        print("Exiting program...")
-        break
-    else:
-        print("Invalid choice, try again")
+def menu():
+    
+    while True:
+        userChoice = 0
+        userChoice = int(input("What would you like to do?\n1. Add an entry: \n2. Create an entry: \n3. Alter an entry: \n4. Generate a random password: \n5. Exit\n"))
+        if userChoice == 1:
+            addEntry()
+        elif userChoice == 2:
+            newEntry()
+        elif userChoice == 3:
+            alterEntry()
+        elif userChoice == 4:
+            createPassword()
+        elif userChoice == 5:
+            print("Exiting program...")
+            break
+        else:
+            print("Invalid choice, try again")
+
+menu()
