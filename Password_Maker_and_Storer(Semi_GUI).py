@@ -2,6 +2,7 @@
 import csv
 import os
 import random
+import PySimpleGUI as sg
 
 #Checks if a file exists
 csv_file = "passwords.csv"
@@ -74,7 +75,7 @@ def addEntry():
     name = input("Enter your username for the account:\n") #Username
     address = input("Enter your email address associated with that site:\n") #Email address
     password = input("Enter your password for your account:\n") #Password
-    entry = []
+    entry = [] #Creates empty list to store data
     entry.append(site)
     entry.append(address)
     entry.append(name)
@@ -90,7 +91,7 @@ def newEntry():
     name = input("Enter your username for the account:\n") #Username
     address = input("Enter your email address associated with that site:\n") #Email adress
     password = createPassword()
-    entry = []
+    entry = [] #Creates empty list to store data
     entry.append(site)
     entry.append(address)
     entry.append(name)
@@ -100,12 +101,33 @@ def newEntry():
         writer.writerow(entry)
     print("Data successfully added!\n")
     
-'''Needs to be worked on'''
-def alterEntry():
-    userChoice = input("Which account/site requires changing: \n")
-    menuChoice = 0
-    menuChoice = int(input("Which credential requires changing?\n1. Site\n2. Address\n3. Name\n4. Password\n5n Exit\n"))
-'''Needs to be worked on'''
+
+def removeEntry():
+    site = input("Enter the name of the site/app you want to remove:\n") #Asks user which credential they want to remove based on the site/app name
+    i = 0
+    with open(csv_file, "r") as csvfile:
+        reader = csv.reader(csvfile)
+        rows = list(reader)
+        if len(rows) <= 1: #Checks if there are any entries in the csv file
+            print("No entries found.")
+            return
+        else:
+            while i < len(rows):
+                if rows[i][0].strip().lower() == site.strip().lower(): #Checks if the site/app name matches the user input
+                    rows.remove(rows[i]) #Removes the entry from the list of rows
+                    with open(csv_file, "w", newline="") as csvfile:
+                        writer = csv.writer(csvfile)
+                        writer.writerows(rows)
+                    print("Entry removed successfully.")
+                    break
+                else:
+                    if i == len(rows) - 1: #Checks if the loop has reached the end of the list without finding a match
+                        print("Entry not found.")
+                        break
+                    else:
+                        i += 1
+                        continue
+
 
 #Checks if string contains only special characters (no alphanumeric)
 def is_only_special_chars(s):
@@ -114,19 +136,46 @@ def is_only_special_chars(s):
     return not any(char.isalnum() for char in s)
         
 #Menu for user to choose what they want to do
+def menu():
+    while True:
+        userChoice = 0
+        userChoice = int(input("What would you like to do?\n1. Add an entry: \n2. Create an entry: \n3. Remove an entry: \n4. Generate a random password: \n5. Exit\n"))
+        if userChoice == 1:
+            addEntry()
+        elif userChoice == 2:
+            newEntry()
+        elif userChoice == 3:
+            removeEntry()
+        elif userChoice == 4:
+            createPassword()
+        elif userChoice == 5:
+            print("Exiting program...")
+            break
+        else:
+            print("Invalid choice, try again")
+
+
+
+#menu()
+
+#GUI for the program
+
+layout = [[sg.Text("Test")],[sg.Button("Add an entry")],[sg.Button("Create an entry")],[sg.Button("Remove an entry")],[sg.Button("Generate a random password")],[sg.Button("Exit")]]
+
+window = sg.Window("Password Maker and Storer", layout)
+
 while True:
-    userChoice = 0
-    userChoice = int(input("What would you like to do?\n1. Add an entry: \n2. Create an entry: \n3. Alter an entry: \n4. Generate a random password: \n5. Exit\n"))
-    if userChoice == 1:
-        addEntry()
-    elif userChoice == 2:
-        newEntry()
-    elif userChoice == 3:
-        alterEntry()
-    elif userChoice == 4:
-        createPassword()
-    elif userChoice == 5:
-        print("Exiting program...")
+    event, values = window.read()
+    if event == sg.WINDOW_CLOSED or event == "Exit":
         break
-    else:
-        print("Invalid choice, try again")
+    if event == "Add an entry":
+        addEntry()
+    if event == "Create an entry":
+        newEntry()
+    if event == "Remove an entry":
+        removeEntry()
+    if event == "Generate a random password":
+        createPassword()
+
+window.close()
+
